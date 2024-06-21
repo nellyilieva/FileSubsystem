@@ -9,6 +9,7 @@ private:
 
 public:
 	FileSubsystem();
+	FileSubsystem(Directory* d);
 	~FileSubsystem();
 
 	void changeDirectory(const MyString& path);                   //cd
@@ -19,7 +20,7 @@ public:
 	void removeDirectory(const MyString& path);                   //rmdir
 
 	void createFile(const MyString& name);                        //touch
-	void removeFile(const MyString& path);                        //rm
+	void removeFile(const MyString& path);                        //rm	
 	void exec(const MyString& path);                              //exec
 	void rewrite(const MyString& str, const MyString& name);      //echo
 	void add(const MyString& str, const MyString& name);          //echo

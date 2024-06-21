@@ -18,4 +18,6 @@ public:
 	time_t getModificationDate() const;
 
 	void printDate() const; //month - words; ?enum
+
+	virtual bool isDirectory() const = 0;
 };
