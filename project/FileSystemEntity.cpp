@@ -3,7 +3,7 @@
 
 FileSystemEntity::FileSystemEntity(const MyString& _name) : name(_name) {
 	creationDate = time(nullptr);
-	modificationDate = time(nullptr);
+	modificationDate = creationDate;
 }
 
 const MyString& FileSystemEntity::getName() const {

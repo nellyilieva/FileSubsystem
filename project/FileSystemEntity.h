@@ -16,4 +16,6 @@ public:
 	const MyString& getName() const;
 	time_t getCreationDate() const;  //do we need get
 	time_t getModificationDate() const;
+
+	void printDate() const; //month - words; ?enum
 };
