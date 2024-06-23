@@ -1,11 +1,17 @@
 #pragma once
 #include <iostream>
 #include "Directory.h"
+#include "File.h"
+#include "TextFile.h"
+#include "ScriptFile.h"
+#include "LinkFile.h"
 
 class FileSubsystem {
 private:
 	Directory* root;
 	Directory* currentDirectory;
+
+	File* getFileType(const MyString& name, Directory* currentDirectory);
 
 public:
 	FileSubsystem();

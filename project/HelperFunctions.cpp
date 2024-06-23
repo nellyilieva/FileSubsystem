@@ -67,7 +67,7 @@ Vector<MyString> splitPath(const MyString& path) {
     }
 
     if (start < length) {
-        elements.pushBack(path.substr(start));
+        elements.pushBack(path.substr(start,length));
     }
 
     return elements;

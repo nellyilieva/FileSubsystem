@@ -4,5 +4,5 @@
 
 class TextFile : public File {
 public:
-	TextFile(const MyString& _name);
+	TextFile(const MyString& name, Directory* parent);
 };

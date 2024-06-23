@@ -42,7 +42,7 @@ void Directory::free() {
 	files.clear();
 }
 
-Directory::Directory(const MyString& _name) : FileSystemEntity(_name) {} //check
+Directory::Directory(const MyString& _name) : FileSystemEntity(_name) {}
 
 Directory::Directory(const MyString& _name, Directory* _parent) : FileSystemEntity(_name), parent(parent) {}
 
@@ -80,6 +80,7 @@ Directory* Directory::getParentDirectory() const {
 	return parent;
 }
 
+
 Directory* Directory::findDirectoryRecursion(const Vector<MyString>& elements, size_t idx) {
 	if (idx >= elements.getSize()) {
 		return this; //current directory; reached the end of the path; base case
@@ -98,6 +99,40 @@ Directory* Directory::findDirectory(const MyString& path) {   //path -> director
 	Vector<MyString> elements = splitPath(path);
 
 	return findDirectoryRecursion(elements, 0);
+}
+
+
+File* Directory::findFile(const MyString& path) {
+	Vector<MyString> elements = splitPath(path);
+
+	return findFileRecursion(elements, 0, this);
+}
+
+File* findFileRecursion(const Vector<MyString>& elements, size_t idx, Directory* currentDir) {
+	if (idx >= elements.getSize()) {
+		return nullptr;
+	}
+
+	const MyString& currentName = elements[idx];
+
+	Directory* nextDir = currentDir->findDirByName(currentName);
+	if (nextDir) {
+		return findFileRecursion(elements, idx + 1, nextDir);
+	}
+	else {
+		File* foundFile = currentDir->findFileByName(currentName);
+		if (foundFile) {
+			if (idx == elements.getSize() - 1) {
+				return foundFile;
+			}
+			else {
+				return nullptr;
+			}
+		}
+		else {
+			return nullptr;
+		}
+	}
 }
 
 Vector<Directory*> Directory::getDirectories() const {
@@ -135,10 +170,6 @@ void Directory::removeFile(const MyString& name) {
 		}
 	}
 }
-
-//bool Directory::isDirectory() const {
-//	return true;
-//}
 
 void Directory::printInfo() const {
 	FileSystemEntity::printInfo();
@@ -182,7 +213,7 @@ bool Directory::checkName(const MyString& name) const {
 		}
 	}
 
-	for (int i = 0; i < directories.getSize(); i++) {
+	for (int i = 0; i < directories.getSize(); i++) {  //recursion to check every directory/file
 		if (directories[i]->checkName(name)) {
 			return true;
 		}
@@ -190,3 +221,22 @@ bool Directory::checkName(const MyString& name) const {
 
 	return false;
 }
+
+ Directory* Directory::findDirByName(const MyString& name) const {
+	for (size_t i = 0; i < directories.getSize(); i++) {
+		if (directories[i]->getName() == name) {
+			return directories[i];
+		}
+	}
+	return nullptr;
+}
+
+File* Directory::findFileByName(const MyString& name) const {
+	for (size_t i = 0; i < files.getSize(); i++) {
+		if (files[i]->getName() == name) {
+			return files[i];
+		}
+	}
+	return nullptr;
+}
+

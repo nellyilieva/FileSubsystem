@@ -15,6 +15,7 @@ private:
 	void free();
 
 	Directory* findDirectoryRecursion(const Vector<MyString>& elements, size_t idx);
+	File* findFileRecursion(const Vector<MyString>& elements, size_t idx, Directory* currentDirectory);
 
 public:
 	Directory(const MyString& _name);
@@ -32,6 +33,7 @@ public:
 	Directory* getParentDirectory() const;
 
 	Directory* findDirectory(const MyString& path);
+	File* findFile(const MyString& path);
 
 	void addDirectory(Directory* d);
 	void addFile(File* f);
@@ -39,11 +41,13 @@ public:
 	void removeDirectory(const MyString& name);
 	void removeFile(const MyString& name);
 
-	//bool isDirectory() const override;
-
 	void printInfo() const override;
 
 	Vector<MyString> getAbsolutePath() const;
 
 	bool checkName(const MyString& name) const;
+
+	Directory* findDirByName(const MyString& name) const;
+	File* findFileByName(const MyString& name) const;
+
 };

@@ -4,6 +4,6 @@
 
 class ScriptFile : public File {
 public:
-	ScriptFile(const MyString& _name);
+	ScriptFile(const MyString& name, Directory* parent);
 	void execute();
 };

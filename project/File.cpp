@@ -1,14 +1,58 @@
 #include "File.h"
 #include <iostream>
 
-File::File(const MyString& _name) : FileSystemEntity(_name), data("") {}
+void File::free() {
+    delete parent;
+    parent = nullptr;
+}
+
+void File::copyFrom(const File& other) {
+    parent = new Directory(*other.parent);
+}
+
+void File::moveFrom(File&& other) noexcept {
+    parent = other.parent;
+    other.parent = nullptr;
+}
+
+File::File(const MyString& _name, Directory* _parent) : FileSystemEntity(_name), parent(_parent) {}
+
+File::File(const File& other) : FileSystemEntity(other) {
+    copyFrom(other);
+}
+
+File& File::operator=(const File& other) {
+    if (this != &other) {
+        FileSystemEntity::operator=(other);
+        free();
+        copyFrom(other);
+    }
+    return *this;
+}
+
+File::File(File&& other) noexcept : FileSystemEntity(std::move(other)) {
+    moveFrom(std::move(other));
+}
+
+File& File::operator=(File&& other) noexcept {
+    if (this != &other) {
+        FileSystemEntity::operator=(std::move(other));
+        free();
+        moveFrom(std::move(other));
+    }
+    return *this;
+}
+
+File::~File() {
+    free();
+}
 
 const MyString& File::getData() const {
 	return data;
 }
 
-//bool File::isDirectory() const {
-//	return false;
-//}
-
 void File::printInfo() const {}
+
+Directory* File::getParentDirectory() const {
+    return parent;
+}
