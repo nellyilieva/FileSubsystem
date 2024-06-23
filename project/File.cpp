@@ -10,3 +10,5 @@ const MyString& File::getData() const {
 bool File::isDirectory() const {
 	return false;
 }
+
+void File::printInfo() const {}

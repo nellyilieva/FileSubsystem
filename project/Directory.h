@@ -13,6 +13,10 @@ public:
 	Directory(const MyString& _name, Directory* _parent);
 	~Directory();
 
+	//copy and move semantics!!!!!!!
+
+	Vector<FileSystemEntity*> getEntities() const;
+
 	Directory* getParentDirectory() const;
 
 	Directory* findDirectory(const MyString& name); //check again
@@ -21,4 +25,6 @@ public:
 	//void removeEntity(FileSystemEntity* entity);
 
 	bool isDirectory() const override;
+
+	void printInfo() const override;
 };

@@ -29,3 +29,7 @@ void FileSubsystem::changeDirectory(const MyString& path) {
 		}
 	}
 }
+
+void FileSubsystem::list() const {
+	currentDirectory->Directory::printInfo();
+}

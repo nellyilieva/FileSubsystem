@@ -28,6 +28,10 @@ Directory* Directory::findDirectory(const MyString& name) {
 	return nullptr;
 }
 
+Vector<FileSystemEntity*> Directory::getEntities() const {
+	return entities;
+}
+
 void Directory::addEntity(FileSystemEntity* entity) {
 	entities.pushBack(entity);
 }
@@ -35,3 +39,9 @@ void Directory::addEntity(FileSystemEntity* entity) {
 //void Directory::removeEntity(FileSystemEntity* entity) {
 //	entities.
 //}
+
+void Directory::printInfo() const {
+	for (int i = 0; i < entities.getSize(); i++) {
+		entities[i]->FileSystemEntity::printInfo();
+	}
+}

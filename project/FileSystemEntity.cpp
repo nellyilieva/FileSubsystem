@@ -1,19 +1,26 @@
 #include "FileSystemEntity.h"
+#include "HelperFunctions.h"
 #include <iostream>
 
-FileSystemEntity::FileSystemEntity(const MyString& _name) : name(_name) {
-	creationDate = time(nullptr);
-	modificationDate = creationDate;
-}
+FileSystemEntity::FileSystemEntity(const MyString& _name) : name(_name), creationDate(Time::getCurrentTime()), modificationDate(Time::getCurrentTime()) {}
 
 const MyString& FileSystemEntity::getName() const {
 	return name;
 }
 
-time_t FileSystemEntity::getCreationDate() const {
+const MyString& FileSystemEntity::getCreationDate() const {
 	return creationDate;
 }
 
-time_t FileSystemEntity::getModificationDate() const {
+const MyString& FileSystemEntity::getModificationDate() const {
 	return modificationDate;
+}
+
+void FileSystemEntity::printInfo() const {
+	std::cout << getCreationDate() << " " << getName() << "\n";
+	std::cout << "Last modification at: " << getModificationDate() << "\n";
+}
+
+void FileSystemEntity::updateModificationDate() {
+	modificationDate = Time::getCurrentTime();
 }

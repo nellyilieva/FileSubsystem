@@ -1,23 +1,25 @@
 #pragma once
 #include <iostream>
-#include <ctime>
 #include "MyString.h"
+#include "Time.h"
 
 class FileSystemEntity {
 private:
 	MyString name;
-	time_t creationDate;    //Time from lectures???
-	time_t modificationDate;  //neshto otdelno za time i date???
+	MyString creationDate;
+	MyString modificationDate;
 
 public:
 	FileSystemEntity(const MyString& _name);
 	virtual ~FileSystemEntity() = default;
 
 	const MyString& getName() const;
-	time_t getCreationDate() const;  //do we need get
-	time_t getModificationDate() const;
-
-	void printDate() const; //month - words; ?enum
+	const MyString& getCreationDate() const;
+	const MyString& getModificationDate() const;
 
 	virtual bool isDirectory() const = 0;
+
+	virtual void printInfo() const;
+
+	void updateModificationDate();
 };
