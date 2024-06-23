@@ -15,6 +15,8 @@ public:
     MyString& operator=(MyString&& other) noexcept;
     ~MyString();
 
+    MyString substr(size_t start, size_t length) const;
+
     size_t getCapacity() const;
     size_t getSize() const;
 

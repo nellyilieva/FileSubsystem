@@ -16,7 +16,7 @@ const MyString& FileSystemEntity::getModificationDate() const {
 	return modificationDate;
 }
 
-void FileSystemEntity::printInfo() const {
+void FileSystemEntity::printInfo() const { //it is virtual
 	std::cout << getCreationDate() << " " << getName() << "\n";
 	std::cout << "Last modification at: " << getModificationDate() << "\n";
 }
@@ -24,3 +24,4 @@ void FileSystemEntity::printInfo() const {
 void FileSystemEntity::updateModificationDate() {
 	modificationDate = Time::getCurrentTime();
 }
+

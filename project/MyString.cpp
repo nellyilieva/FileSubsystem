@@ -87,6 +87,25 @@ MyString::~MyString()
     free();
 }
 
+MyString MyString::substr(size_t start, size_t length) const {
+    if (start >= _size) {
+        return MyString();
+    }
+
+    length = std::min(length, _size - start);
+
+    MyString str(length);
+
+    for (size_t i = 0; i < length; i++) {
+        str._data[i] = _data[start + i];
+    }
+
+    str._data[length] = '\0';
+    str._size = length;
+
+    return str;
+}
+
 size_t MyString::getCapacity() const
 {
     return _allocatedDataSize - 1;

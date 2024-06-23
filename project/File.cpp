@@ -7,8 +7,8 @@ const MyString& File::getData() const {
 	return data;
 }
 
-bool File::isDirectory() const {
-	return false;
-}
+//bool File::isDirectory() const {
+//	return false;
+//}
 
 void File::printInfo() const {}

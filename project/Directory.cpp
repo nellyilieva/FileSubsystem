@@ -1,47 +1,192 @@
 #include "Directory.h"
+#include "HelperFunctions.h"
 
-Directory::Directory(const MyString& _name) : FileSystemEntity(_name) {}
+void Directory::copyFrom(const Directory& other) {
+	for (int i = 0; i < other.directories.getSize(); i++) {
+		Directory* d = new Directory(*other.directories[i]);
+		directories.pushBack(d);
+	}
+
+	parent = other.parent;
+
+	for (int i = 0; i < other.files.getSize(); i++) {
+		File* f = new File(*other.files[i]);
+		files.pushBack(f);
+	}
+}
+
+void Directory::moveFrom(Directory&& other) {
+	directories = std::move(other.directories);
+	other.directories.clear();
+
+	parent = other.parent;
+	other.parent = nullptr;
+
+	files = std::move(other.files);
+	other.files.clear();
+}
+
+void Directory::free() {
+	for (int i = 0; i < directories.getSize(); i++) {
+		delete directories[i];
+	}
+
+	directories.clear();
+
+	parent = nullptr;
+
+	for (int i = 0; i < files.getSize(); i++) {
+		delete files[i];
+	}
+
+	files.clear();
+}
+
+Directory::Directory(const MyString& _name) : FileSystemEntity(_name) {} //check
 
 Directory::Directory(const MyString& _name, Directory* _parent) : FileSystemEntity(_name), parent(parent) {}
 
 Directory::~Directory() {
-	for (int i = 0; i < entities.getSize(); i++) {
-		delete entities[i];
-	}
+	free();
 }
 
-bool Directory::isDirectory() const {
-	return true;
+Directory::Directory(const Directory& other) : FileSystemEntity(other) {
+    copyFrom(other);
+}
+
+Directory& Directory::operator=(const Directory& other) {
+    if (this != &other) {
+        FileSystemEntity::operator=(other);
+        free();
+        copyFrom(other);
+    }
+    return *this;
+}
+
+Directory::Directory(Directory&& other) noexcept : FileSystemEntity(std::move(other)) {
+    moveFrom(std::move(other));
+}
+
+Directory& Directory::operator=(Directory&& other) noexcept {
+    if (this != &other) {
+        FileSystemEntity::operator=(std::move(other));
+        free();
+        moveFrom(std::move(other));
+    }
+    return *this;
 }
 
 Directory* Directory::getParentDirectory() const {
 	return parent;
 }
 
-Directory* Directory::findDirectory(const MyString& name) {
-	for (int i = 0; i < entities.getSize(); i++) {
-		if (entities[i]->isDirectory() && entities[i]->getName() == name) {
-			return dynamic_cast<Directory*>(entities[i]);
+Directory* Directory::findDirectoryRecursion(const Vector<MyString>& elements, size_t idx) {
+	if (idx >= elements.getSize()) {
+		return this; //current directory; reached the end of the path; base case
+	}
+
+	for (int i = 0; i < directories.getSize(); i++) {
+		if (directories[i]->getName() == elements[idx]) {
+			return directories[i]->findDirectoryRecursion(elements, idx + 1);
 		}
 	}
 
 	return nullptr;
 }
 
-Vector<FileSystemEntity*> Directory::getEntities() const {
-	return entities;
+Directory* Directory::findDirectory(const MyString& path) {   //path -> directories separeted by /
+	Vector<MyString> elements = splitPath(path);
+
+	return findDirectoryRecursion(elements, 0);
 }
 
-void Directory::addEntity(FileSystemEntity* entity) {
-	entities.pushBack(entity);
+Vector<Directory*> Directory::getDirectories() const {
+	return directories;
 }
 
-//void Directory::removeEntity(FileSystemEntity* entity) {
-//	entities.
+Vector<File*> Directory::getFiles() const {
+	return files;
+}
+
+void Directory::addDirectory(Directory* d) {
+	directories.pushBack(d);
+}
+
+void Directory::addFile(File* f) {
+	files.pushBack(f);
+}
+
+void Directory::removeDirectory(const MyString& name) {
+	for (int i = 0; i < directories.getSize(); i++) {
+		if (directories[i]->getName() == name) {
+			delete directories[i];
+			directories.erase(i);
+			return;
+		}
+	}
+}
+
+void Directory::removeFile(const MyString& name) {
+	for (int i = 0; i < files.getSize(); i++) {
+		if (files[i]->getName() == name) {
+			delete files[i];
+			files.erase(i);
+			return;
+		}
+	}
+}
+
+//bool Directory::isDirectory() const {
+//	return true;
 //}
 
 void Directory::printInfo() const {
-	for (int i = 0; i < entities.getSize(); i++) {
-		entities[i]->FileSystemEntity::printInfo();
+	FileSystemEntity::printInfo();
+
+	for (size_t i = 0; i < directories.getSize(); i++) {
+		std::cout << " Directory: ";
+		directories[i]->printInfo();
+		std::cout << "\n";
 	}
+
+	for (size_t i = 0; i < files.getSize(); i++) {
+		std::cout << "  ";
+		files[i]->printInfo();
+		std::cout << "\n";
+	}
+}
+
+Vector<MyString> Directory::getAbsolutePath() const {
+	Vector<MyString> elements;
+
+	const Directory* currDirectory = this;
+
+	while (currDirectory != nullptr) {
+		elements.pushBack(currDirectory->getName());
+		currDirectory = currDirectory->parent;
+	}
+
+	return elements;
+}
+
+bool Directory::checkName(const MyString& name) const {
+	for (int i = 0; i < directories.getSize(); i++) {
+		if (directories[i]->getName() == name) {
+			return true;
+		}
+	}
+
+	for (int i = 0; i < files.getSize(); i++) {
+		if (files[i]->getName() == name) {
+			return true;
+		}
+	}
+
+	for (int i = 0; i < directories.getSize(); i++) {
+		if (directories[i]->checkName(name)) {
+			return true;
+		}
+	}
+
+	return false;
 }

@@ -46,6 +46,8 @@ public:
 	void clear();
 	void shrinkToFit();
 
+	void erase(size_t index);
+
 	T& operator[](size_t index);
 	const T& operator[](size_t index) const;
 
@@ -224,6 +226,18 @@ void Vector<T>::clear() {
 template<typename T>
 void Vector<T>::shrinkToFit() {
 	resize(size);
+}
+
+template<typename T>
+void Vector<T>::erase(size_t index) {
+	assertIndex(index);
+
+	for (size_t i = index; i < size - 1; i++) {
+		data[i] = std::move(data[i + 1]);
+	}
+
+	--size;
+	downsizeIfNeeded();
 }
 
 template<typename T>

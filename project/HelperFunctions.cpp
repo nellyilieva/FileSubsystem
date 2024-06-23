@@ -44,3 +44,31 @@ MyString intToStr(int num) {
 
     return result;
 }
+
+Vector<MyString> splitPath(const MyString& path) {
+    Vector<MyString> elements;
+    MyString separator("/");
+
+    int start = 0;
+    int length = path.getSize();
+    int sepPos = 0;
+
+    while (sepPos < length) {
+        while (sepPos < length && path[sepPos] != '/') {
+            sepPos++;
+        }
+
+        if (sepPos > start) {
+            elements.pushBack(path.substr(start, sepPos - start));
+        }
+
+        start = sepPos + 1;
+        sepPos++;
+    }
+
+    if (start < length) {
+        elements.pushBack(path.substr(start));
+    }
+
+    return elements;
+}

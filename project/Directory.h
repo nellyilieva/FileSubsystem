@@ -1,30 +1,49 @@
 #pragma once
 #include <iostream>
 #include "FileSystemEntity.h"
+#include "File.h"
 #include "Vector.hpp"
 
 class Directory : public FileSystemEntity {
 private:
-	Vector<FileSystemEntity*> entities;
+	Vector<Directory*> directories;
+	Vector<File*> files;
 	Directory* parent;
+
+	void copyFrom(const Directory& other);
+	void moveFrom(Directory&& other);
+	void free();
+
+	Directory* findDirectoryRecursion(const Vector<MyString>& elements, size_t idx);
 
 public:
 	Directory(const MyString& _name);
 	Directory(const MyString& _name, Directory* _parent);
 	~Directory();
 
-	//copy and move semantics!!!!!!!
+    Directory(const Directory& other);
+    Directory& operator=(const Directory& other);
+	Directory(Directory&& other) noexcept;
+	Directory& operator=(Directory&& other) noexcept;
 
-	Vector<FileSystemEntity*> getEntities() const;
+	Vector<Directory*> getDirectories() const;
+	Vector<File*> getFiles() const;
 
 	Directory* getParentDirectory() const;
 
-	Directory* findDirectory(const MyString& name); //check again
+	Directory* findDirectory(const MyString& path);
 
-	void addEntity(FileSystemEntity* entity);
-	//void removeEntity(FileSystemEntity* entity);
+	void addDirectory(Directory* d);
+	void addFile(File* f);
 
-	bool isDirectory() const override;
+	void removeDirectory(const MyString& name);
+	void removeFile(const MyString& name);
+
+	//bool isDirectory() const override;
 
 	void printInfo() const override;
+
+	Vector<MyString> getAbsolutePath() const;
+
+	bool checkName(const MyString& name) const;
 };

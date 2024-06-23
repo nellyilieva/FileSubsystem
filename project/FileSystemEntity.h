@@ -17,7 +17,7 @@ public:
 	const MyString& getCreationDate() const;
 	const MyString& getModificationDate() const;
 
-	virtual bool isDirectory() const = 0;
+	//virtual bool isDirectory() const = 0;
 
 	virtual void printInfo() const;
 

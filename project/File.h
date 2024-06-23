@@ -8,6 +8,6 @@ private:
 public:
 	File(const MyString& _name);
 	const MyString& getData() const;
-	bool isDirectory() const override;
+	//bool isDirectory() const override;
 	void printInfo() const override;
 };
