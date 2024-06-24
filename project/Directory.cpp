@@ -240,18 +240,3 @@ File* Directory::findFileByName(const MyString& name) const {
 	}
 	return nullptr;
 }
-
-//MyString Directory::serialize() const {
-//	MyString result = "Directory:" + getName() + "\n";
-//	for (int i = 0; i < directories.getSize(); i++) {
-//		result += directories[i]->serialize();
-//	}
-//	for (int i = 0; i < files.getSize(); i++) {
-//		result += files[i]->serialize();
-//	}
-//	return result;
-//}
-
-//Directory* Directory::deserialize(const MyString& data, Directory* parent = nullptr) {
-//
-//}
