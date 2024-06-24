@@ -106,6 +106,22 @@ MyString MyString::substr(size_t start, size_t length) const {
     return str;
 }
 
+bool MyString::isSubstr(const MyString& subString) {
+    if (subString.getSize() > _size) {
+        return false;
+    }
+    if (subString.getSize() == _size && subString == *this) {
+        return true;
+    }
+    for (int i = 0; i < _size - subString.getSize(); i++) {
+        MyString current = substr(i, i + subString.getSize());
+        if (current == subString) {
+            return true;
+        }
+    }
+    return false;
+}
+
 size_t MyString::getCapacity() const
 {
     return _allocatedDataSize - 1;

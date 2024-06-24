@@ -50,4 +50,7 @@ public:
 	Directory* findDirByName(const MyString& name) const;
 	File* findFileByName(const MyString& name) const;
 
+	MyString serialize() const;
+	static Directory* deserialize(const MyString& data, Directory* parent = nullptr);
+
 };

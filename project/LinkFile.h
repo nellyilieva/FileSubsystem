@@ -5,4 +5,5 @@
 class LinkFile : public File {
 public:
 	LinkFile(const MyString& name, Directory* parent);
+	void executeFile() const;
 };

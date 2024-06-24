@@ -21,6 +21,7 @@ public:
     size_t getSize() const;
 
     const char* c_str() const;
+    bool isSubstr(const MyString& subString);
 
     MyString& operator+=(const MyString& other);
     MyString& operator+=(char ch);

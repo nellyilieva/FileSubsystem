@@ -11,6 +11,10 @@ FileSubsystem::~FileSubsystem() {
 	delete root;
 }
 
+Directory* FileSubsystem::getRoot() const {
+	return root;
+}
+
 void FileSubsystem::changeDirectory(const MyString& path) {
 	if (path == "..") {
 		if (currentDirectory && currentDirectory->getParentDirectory()) {
@@ -143,4 +147,37 @@ void FileSubsystem::removeFile(const MyString& path) {
 	else {
 		throw std::runtime_error("Do not exist!");
 	}
+}
+
+//void FileSubsystem::exec(const MyString& path) {
+//
+//}
+//
+//void FileSubsystem::rewrite(const MyString& str, const MyString& name) {
+//
+//}
+//
+//void FileSubsystem::add(const MyString& str, const MyString& name) {
+//
+//}
+//
+//void FileSubsystem::find(const MyString& path, const MyString& str) const {
+//	
+//}
+
+void FileSubsystem::print(const MyString& str) const {
+	std::cout << str.c_str() << "/n";
+}
+
+void FileSubsystem::saveState(const MyString& filePath) const {
+	std::ofstream outFile(filePath.c_str());
+	if (!outFile) {
+		throw std::runtime_error("Cannot open file for saving state!");
+	}
+	outFile << root->serialize();
+	outFile.close();
+}
+
+void FileSubsystem::exit() {
+
 }

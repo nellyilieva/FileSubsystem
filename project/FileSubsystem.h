@@ -13,10 +13,15 @@ private:
 
 	File* getFileType(const MyString& name, Directory* currentDirectory);
 
+	void saveState(const MyString& filePath) const;
+
 public:
 	FileSubsystem();
 	FileSubsystem(Directory* d);
 	~FileSubsystem();
+
+	Directory* getRoot() const;
+
 
 	void changeDirectory(const MyString& path);                   //cd
 	void list() const;                                            //ls
