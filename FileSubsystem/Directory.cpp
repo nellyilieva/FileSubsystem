@@ -242,6 +242,7 @@ File* Directory::findFileByName(const MyString& name) const {
 	}
 	return nullptr;
 }
+<<<<<<< HEAD:FileSubsystem/Directory.cpp
 
 MyString Directory::serialize() const {
 	MyString serializedData = name + "\n";
@@ -304,3 +305,5 @@ Directory* Directory::deserialize(const MyString& data, Directory* parent) {
 	return dir;
 }
 
+=======
+>>>>>>> 56db1ce39d3031aa3d17038c21d9d0b1a5960551:project/Directory.cpp
